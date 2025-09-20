@@ -4,14 +4,16 @@ const app = express();
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 // uuidv4(); // Remove or use this where you need to generate a UUID
+const methodOverride = require('method-override');
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
+app.use(methodOverride('_method'))
 
 
-const comments = [{
+let comments = [{
     id: uuidv4(),
     username: 'Tony',
     comment: 'I am Iron man'
@@ -84,17 +86,25 @@ app.patch('/comments/:id', (req, res) => {
     if (typeof newCommentText !== 'string' || newCommentText.trim() === '') {
         return res.status(400).send('Field "comment" is required');
     }
-    foundComment.comment = newCommentText;
-    return res.json(foundComment);
+    foundComment.comment = newCommentText.trim();
+    return res.redirect(`/comments/${foundComment.id}`);
 })
 
 //Updation Using a form 
 app.get('/comments/:id/edit', (req, res) => {
+    const { id } = req.params;
     const comment = comments.find(c => c.id === id);
     res.render('comments/edit', { comment })
+    console.log('updatiion request')
 
 })
 
+//Deletion
+app.delete('/comments/:id', (req, res) => {
+    const { id } = req.params;
+    comments = comments.filter(c => c.id !== id);
+    res.redirect('/comments')
+})
 
 app.listen(3000, () => {
     console.log("On port 3000")
