@@ -13,8 +13,8 @@ mongoose.connect('mongodb://localhost:27017/farmStand', { useNewUrlParser: true,
         console.log("Errororr")
         console.log(err)
     })
-app.set('view', path.join(__dirname, 'views'));
-app.set('view engien', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.get('/products', async (req, res) => {
     const products = await Product.find({})
