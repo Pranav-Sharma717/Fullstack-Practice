@@ -21,12 +21,18 @@ app.get('/products', async (req, res) => {
     res.render('products/index.ejs', { products })
 })
 
+app.get('/products/new', (req, res) => {
+    res.render('products/new')
+})
+
 app.get('/products/:id', async (req, res) => {
     const { id } = req.params;
     const found = await Product.findById(id);
     console.log(found);
     res.render('products/show', { found })
 })
+
+
 
 
 app.listen(3000, () => {
