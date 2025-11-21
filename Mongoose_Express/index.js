@@ -33,6 +33,11 @@ app.post('/products', async (req, res) => {
     res.redirect('/products')
 })
 
+app.get('/products/:id/edit', async (req, res) => {
+    const product = await Product.findById(id);
+    res.render('products/edit', { product })
+})
+
 app.get('/products/:id', async (req, res) => {
     const { id } = req.params;
     const found = await Product.findById(id);
