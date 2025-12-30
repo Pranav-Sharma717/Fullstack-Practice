@@ -42,8 +42,9 @@ app.get('/products/:id/edit', async (req, res) => {
 })
 
 app.put('/products/:id', async (req, res) => { //Put requests are mainly used for getting full data from the redirection while patch is used to get the partial info
-    console.log(req.body)
-    res.send("PUT!!")
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true, new: true })
+    res.redirect(`/products/${product._id}`)
 })
 
 app.get('/products/:id', async (req, res) => {

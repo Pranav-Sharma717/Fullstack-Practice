@@ -15,11 +15,12 @@
         <label for="price">Price(Unit)</label>
         <input type="number" name="price" id="price" placeholder="product price" value="<%=product.price%>">
         <label for="category">Select Category</label>
-        <select name="Category" id="category">
-            <option value="fruit">Fruit</option>
-            <option value="vegetable">Vegetable</option>
-            <option value="dairy">Dairy</option>
+        <select name="category" id="category">
+            <option value="fruit" <% if(product.category==='fruit' ) { %>selected<% } %>>Fruit</option>
+            <option value="vegetable" <% if(product.category==='vegetable' ) { %>selected<% } %>>Vegetable</option>
+            <option value="dairy" <% if(product.category==='dairy' ) { %>selected<% } %>>Dairy</option>
         </select>
+        <a href="/products/<%= product._id %>">Cancel </a>
         <button>Submit</button>
     </form>
 
