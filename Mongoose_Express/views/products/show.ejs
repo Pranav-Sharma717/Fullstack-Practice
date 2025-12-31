@@ -14,11 +14,16 @@
     <ul>
         <li>Price: <%= found.price %>
         </li>
-        <li>Category: <%= found.category %>
+        <li>Category: <a href="/products?category=<%= found.category %>">
+                <%= found.category %>
+            </a>
         </li>
     </ul>
     <a href="/products">All products</a>
     <a href="/products/<%= found._id %>/edit">Edit details</a>
+    <form action="/products/<%= found._id %>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
 </body>
 
 </html>

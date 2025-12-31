@@ -21,8 +21,15 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 app.get('/products', async (req, res) => {
-    const products = await Product.find({})
-    res.render('products/index.ejs', { products })
+    const { category } = req.query;
+    if (category) {
+        const products = await Product.find({ category })
+        res.render('products/index.ejs', { products, category })
+
+    } else {
+        const products = await Product.find({})
+        res.render('products/index.ejs', { products, category: 'All' })
+    }
 })
 
 app.get('/products/new', (req, res) => {
@@ -45,6 +52,15 @@ app.put('/products/:id', async (req, res) => { //Put requests are mainly used fo
     const { id } = req.params;
     const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true, new: true })
     res.redirect(`/products/${product._id}`)
+})
+
+app.delete('/products/:id', async (req, res) => {
+    const { id } = req.params;
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deletedProduct) {
+        return res.status(404).send('Product not found');
+    }
+    res.redirect('/products');
 })
 
 app.get('/products/:id', async (req, res) => {
